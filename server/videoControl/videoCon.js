@@ -15,7 +15,8 @@ class VideoRender{
 }
 
 
-fs.readdir(__dirname + "/videos", (err, files) => {
+function getVideo(path) {
+    fs.readdir(path, (err, files) => {
     if (err) {
       console.error(err);
       return;
@@ -24,5 +25,10 @@ fs.readdir(__dirname + "/videos", (err, files) => {
     Video = new VideoRender(files); 
   });
 
+}
 
-module.exports = router;
+
+module.exports = {
+    router:router,
+    getVideo:getVideo
+}

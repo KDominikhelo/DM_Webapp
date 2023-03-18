@@ -1,17 +1,19 @@
 const express = require("express")
 const router = express.Router();
 const conn = require("../conn/conn");
+const videoCon = require("../videoControl/videoCon");
+var jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs =require("fs")
 router.use(conn.router);
-
-
+router.use(videoCon.router)
+videoCon.getVideo(__dirname+"/videos");
 
 router.use((req, res, next) => {
     console.log('Time: ', Date.now())
     next()
   })
-  router.use(express.static(__dirname+'/../videoControl/videos'));
+ //router.use(express.static(__dirname+'/../videoControl/videos'));
  
   
 const storage = multer.diskStorage({
@@ -34,9 +36,22 @@ const storage = multer.diskStorage({
   });
 
 // Routes
-router.route("/video/videoManager").post(upload.single('video'), (req, res) => {
+router.route("/video/videoManager/token/:token").post(upload.single('video'), (req, res) => {
+    const videoToken =  jwt.sign({ id: req.file.path}, 'video')
+    
+    const oldPath = req.file.path;
+    const newFileName = videoToken+".mp4"; // itt állíthatod be az új fájlnevet
+    const newPath = __dirname + '/videos/' + newFileName;
+    const userToken = req.params.token
+    const fileSize = req.file.size; // itt kérjük le a fájl méretét
+
+    conn.videoMaker(oldPath.split("videos")[1],userToken,videoToken,fileSize);
+    
+    fs.renameSync(oldPath, newPath);
+  
     res.send('File uploaded successfully');
   });
+  
   router.get('/video/getvideo/:fileName', function(req, res) {
     const videoPath = __dirname+ '/videos/'+req.params.fileName+'.mp4';
     const stat = fs.statSync(videoPath);

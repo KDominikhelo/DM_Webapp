@@ -49,8 +49,31 @@ connection.connect((err) => {
     //req.params.token
   return USERS.logout(req.params.token);
  }
- function getVideoFromDB() {
-    
+ async function videoMaker(name,Usertoken,videoToken,size) {
+
+    const userID = async token=>{
+return await USERS.users.map((item)=>{
+    if (item.token == token) {
+        connection.query('CALL addVideo(?,?,?,?)',[name,item.id,videoToken,size],function (error, results, fields) {
+
+            if (error) {
+                console.log(error);
+                return error
+            } else {
+               console.log(results);
+                
+                return results
+            }
+            
+        })
+    }
+})
+    }
+
+console.log(userID(Usertoken));
+
+ 
+      
  }
 
 
@@ -60,6 +83,7 @@ module.exports = {
     Login:Login,
     Regist:Regist,
     Logout:Logout,
+    videoMaker:videoMaker,
     USERS:USERS
 
 
