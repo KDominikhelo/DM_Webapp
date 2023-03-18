@@ -49,6 +49,9 @@ connection.connect((err) => {
     //req.params.token
   return USERS.logout(req.params.token);
  }
+ function getVideoFromDB() {
+    
+ }
 
 
 module.exports = {
