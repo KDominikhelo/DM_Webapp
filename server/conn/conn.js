@@ -1,9 +1,14 @@
 const express =require("express");
 const router = express.Router();
 const mysql = require("mysql");
+const videoCon = require("../videoControl/videoCon");
 const userCon = require("../userControl/userCon");
 const bodyparser = require("body-parser");
+
 router.use(bodyparser.urlencoded({ extended: true }));
+router.use(videoCon.router);
+const VIDEO = videoCon
+
 const USERS = userCon.userCon;
 const connection  =mysql.createConnection({
     user:"root",
@@ -49,26 +54,10 @@ connection.connect((err) => {
     //req.params.token
   return USERS.logout(req.params.token);
  }
- async function videoMaker(name,Usertoken,videoToken,size) {
+ async function videoMaker(req,res,dirname) {//name,Usertoken,videoToken,size
+    
+    VIDEO.Video.addVideo(req,res,connection,dirname);
 
-    const userID = async token=>{
-return await USERS.users.map((item)=>{
-    if (item.token == token) {
-        connection.query('CALL addVideo(?,?,?,?)',[name,item.id,videoToken,size],function (error, results, fields) {
-
-            if (error) {
-                console.log(error);
-                return error
-            } else {
-               console.log(results);
-                
-                return results
-            }
-            
-        })
-    }
-})
-    }
 
 console.log(userID(Usertoken));
 
@@ -84,6 +73,7 @@ module.exports = {
     Regist:Regist,
     Logout:Logout,
     videoMaker:videoMaker,
+    VIDEO:VIDEO,
     USERS:USERS
 
 
