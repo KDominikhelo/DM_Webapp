@@ -1,7 +1,9 @@
 
 export interface User {
-    username: string,
-    password: string,
-    email: string,
-    loyalitiyPont?: number,
+    token?: string,
+    name: string,
+    pass: string,
+    email?: string
 }
+
+

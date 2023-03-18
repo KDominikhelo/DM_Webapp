@@ -6,8 +6,8 @@ const bodyparser = require("body-parser");
 router.use(bodyparser.urlencoded({ extended: true }));
 const USERS = userCon.userCon;
 const connection  =mysql.createConnection({
-    user:"Martin",
-    password:"12345",
+    user:"root",
+    password:"",
     host:"localhost",
     database:"staticquestion"
 })

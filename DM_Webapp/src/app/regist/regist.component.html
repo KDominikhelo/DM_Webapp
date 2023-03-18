@@ -1,0 +1,18 @@
+<div class="container regist text-center">
+
+
+
+
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <input type="text" formControlName="username" placeholder="Felhasználónév">
+      <input type="email" formControlName="email" placeholder="E-mail cím">
+      <input type="password" formControlName="password" placeholder="Jelszó">
+      <button type="submit">Regisztráció</button>
+    </form>
+    
+
+
+
+</div>
+
+         
