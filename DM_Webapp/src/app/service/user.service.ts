@@ -8,7 +8,9 @@ import { User } from '../interface/user';
 })
 export class UserService {
 
-  public isLoggedIn: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  private isLoggedIn = false;
+  public loginChangeEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) { }
 
@@ -18,12 +20,19 @@ export class UserService {
     }
 
     loginUser(user: User): Observable<User> {
+      this.isLoggedIn = true;
+      this.loginChangeEvent.emit(this.isLoggedIn)
       return this.http.post<User>(`http://localhost:3000/login`, user)
     }
 
     logOutUser(token: string): Observable<string>{
+      this.isLoggedIn = true;
+      this.loginChangeEvent.emit(this.isLoggedIn)
       return this.http.post<string>(`http://localhost:3000/logout/${token}`,token)
     }
 
+    getIsloggedIn(){
+      return this.isLoggedIn;
+    }
 
 }
